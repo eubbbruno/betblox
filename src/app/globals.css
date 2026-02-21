@@ -1,11 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* 🚀 BETBLOX PROFESSIONAL DESIGN SYSTEM */
 /* Inspirado em: Stake.com, BC.Game, Bet365 */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
   /* === PROFESSIONAL COLOR PALETTE === */
