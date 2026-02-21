@@ -1,0 +1,385 @@
+// BetBlox - Schema 100% Compliant com Portaria SPA/MF Nº 2.104
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// === COMPLIANCE ENUMS ===
+enum DocType {
+  RG
+  CNH
+  PASSPORT
+}
+
+enum KYCStatus {
+  PENDING
+  PROCESSING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum TaxStatus {
+  PENDING
+  PROCESSED
+  SUBMITTED
+  ERROR
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+  GAME_BET
+  GAME_WIN
+  GAME_REFUND
+  BONUS
+  BONUS_WIN
+  TAX_WITHHOLDING
+  ADJUSTMENT
+  FEE
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+  EXPIRED
+}
+
+enum VIPLevel {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+  DIAMOND
+}
+
+// === CORE USER MODEL ===
+model User {
+  id                    String       @id @default(cuid())
+  email                 String       @unique
+  emailVerified         DateTime?
+  
+  // === COMPLIANCE FIELDS (OBRIGATÓRIOS) ===
+  cpf                   String       @unique
+  fullName              String
+  birthDate             DateTime
+  phone                 String
+  
+  // Documentos KYC
+  documentType          DocType?
+  documentNumber        String?
+  documentFrontUrl      String?
+  documentBackUrl       String?
+  selfieUrl             String?
+  proofAddressUrl       String?
+  kycStatus             KYCStatus    @default(PENDING)
+  kycCompletedAt        DateTime?
+  
+  // Endereço (obrigatório para compliance)
+  street                String?
+  number                String?
+  complement            String?
+  neighborhood          String?
+  city                  String?
+  state                 String?
+  zipCode               String?
+  
+  // === JOGO RESPONSÁVEL (OBRIGATÓRIO) ===
+  depositLimitDaily     Float?
+  depositLimitWeekly    Float?
+  depositLimitMonthly   Float?
+  timeLimitDaily        Int?         // minutos por dia
+  
+  selfExclusionUntil    DateTime?
+  permanentExclusion    Boolean      @default(false)
+  exclusionReason       String?
+  
+  // Alertas e notificações
+  timeAlerts            Boolean      @default(true)
+  lossAlerts            Boolean      @default(true)
+  depositAlerts         Boolean      @default(true)
+  
+  // === SEGURANÇA ===
+  password              String
+  twoFactorSecret       String?
+  twoFactorEnabled      Boolean      @default(false)
+  loginAttempts         Int          @default(0)
+  lockedUntil           DateTime?
+  
+  // === FINANCEIRO ===
+  balance               Float        @default(0)
+  bonusBalance          Float        @default(0)
+  
+  // Tributação
+  taxId                 String?      // CPF para IR
+  taxWithheld           Float        @default(0)
+  
+  // VIP
+  vipLevel              VIPLevel     @default(BRONZE)
+  vipPoints             Int          @default(0)
+  
+  // Timestamps
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  lastLoginAt           DateTime?
+  
+  // Relations
+  transactions          Transaction[]
+  gameSessions          GameSession[]
+  taxReports            TaxReport[]
+  auditLogs             AuditLog[]
+  supportTickets        SupportTicket[]
+  
+  @@map("users")
+}
+
+// === TRANSAÇÕES (AUDITORIA OBRIGATÓRIA) ===
+model Transaction {
+  id                    String             @id @default(cuid())
+  userId                String
+  user                  User               @relation(fields: [userId], references: [id])
+  
+  type                  TransactionType
+  status                TransactionStatus  @default(PENDING)
+  
+  amount                Float
+  fee                   Float              @default(0)
+  netAmount             Float
+  
+  // PIX específico
+  pixKey                String?
+  pixQrCode             String?
+  pixTxId               String?
+  
+  // Compliance
+  description           String
+  reference             String?            // ID externo
+  
+  // Tributação (IR > R$ 2.000)
+  taxWithheld           Float              @default(0)
+  taxRate               Float              @default(0)
+  
+  // Auditoria
+  ipAddress             String
+  userAgent             String
+  
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  completedAt           DateTime?
+  
+  @@index([userId, createdAt])
+  @@index([type, status])
+  @@map("transactions")
+}
+
+// === SESSÕES DE JOGO (OBRIGATÓRIO) ===
+model GameSession {
+  id                    String       @id @default(cuid())
+  userId                String
+  user                  User         @relation(fields: [userId], references: [id])
+  
+  gameId                String
+  providerId            String
+  
+  // Sessão
+  sessionToken          String       @unique
+  externalSessionId     String?
+  
+  status                String       // ACTIVE, CLOSED, EXPIRED
+  
+  // Financeiro
+  totalBets             Float        @default(0)
+  totalWins             Float        @default(0)
+  netResult             Float        @default(0)
+  
+  // RNG Compliance
+  rngSeed               String?
+  rngSequence           String?
+  
+  // Timestamps
+  startedAt             DateTime     @default(now())
+  endedAt               DateTime?
+  lastActivityAt        DateTime     @default(now())
+  
+  // Auditoria
+  ipAddress             String
+  userAgent             String
+  
+  @@index([userId, startedAt])
+  @@index([status])
+  @@map("game_sessions")
+}
+
+// === RELATÓRIOS FISCAIS (OBRIGATÓRIO) ===
+model TaxReport {
+  id                    String       @id @default(cuid())
+  userId                String
+  user                  User         @relation(fields: [userId], references: [id])
+  
+  month                 Int
+  year                  Int
+  
+  // Valores para IR
+  grossWinnings         Float
+  taxableAmount         Float        // Apenas prêmios > R$ 2.000
+  taxWithheld           Float
+  taxRate               Float        @default(0.30)
+  
+  // Status
+  status                TaxStatus    @default(PENDING)
+  submittedAt           DateTime?
+  
+  // Arquivo SPED
+  spedFileUrl           String?
+  
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  
+  @@unique([userId, month, year])
+  @@map("tax_reports")
+}
+
+// === AUDITORIA (OBRIGATÓRIO - 5 ANOS) ===
+model AuditLog {
+  id                    String       @id @default(cuid())
+  userId                String?
+  user                  User?        @relation(fields: [userId], references: [id])
+  
+  // Ação
+  action                String       // LOGIN, BET, WIN, DEPOSIT, etc.
+  category              String       // AUTH, GAME, PAYMENT, COMPLIANCE
+  
+  // Detalhes (JSON)
+  details               String       // JSON string
+  
+  // Request info
+  ipAddress             String
+  userAgent             String
+  endpoint              String?
+  method                String?
+  
+  // Compliance
+  riskScore             Int?         // 0-100
+  flagged               Boolean      @default(false)
+  
+  createdAt             DateTime     @default(now())
+  
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+  @@index([category, createdAt])
+  @@index([flagged])
+  @@map("audit_logs")
+}
+
+// === SUPORTE (OBRIGATÓRIO) ===
+model SupportTicket {
+  id                    String       @id @default(cuid())
+  userId                String
+  user                  User         @relation(fields: [userId], references: [id])
+  
+  subject               String
+  message               String
+  category              String       // TECHNICAL, FINANCIAL, COMPLAINT
+  priority              String       @default("NORMAL") // LOW, NORMAL, HIGH, URGENT
+  status                String       @default("OPEN")   // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+  
+  // Compliance (reclamações oficiais)
+  isComplaint           Boolean      @default(false)
+  complaintId           String?      // ID oficial para órgãos reguladores
+  
+  assignedTo            String?
+  resolvedAt            DateTime?
+  
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  
+  @@index([userId, status])
+  @@index([category, priority])
+  @@map("support_tickets")
+}
+
+// === JOGOS E PROVEDORES ===
+model Game {
+  id                    String       @id @default(cuid())
+  providerId            String
+  provider              GameProvider @relation(fields: [providerId], references: [id])
+  
+  externalId            String
+  name                  String
+  slug                  String       @unique
+  
+  category              String       // SLOTS, LIVE_CASINO, etc.
+  subcategory           String?
+  
+  // Compliance
+  rtp                   Float        // Return to Player (obrigatório)
+  volatility            String       // LOW, MEDIUM, HIGH
+  certified             Boolean      @default(false) // RNG certificado
+  certificationUrl      String?
+  
+  // Metadata
+  thumbnail             String
+  banner                String?
+  description           String?
+  
+  // Status
+  isActive              Boolean      @default(true)
+  isFeatured            Boolean      @default(false)
+  
+  // Restrições
+  minBet                Float        @default(0.1)
+  maxBet                Float        @default(1000)
+  
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  
+  @@index([category, isActive])
+  @@index([providerId])
+  @@map("games")
+}
+
+model GameProvider {
+  id                    String       @id @default(cuid())
+  name                  String
+  slug                  String       @unique
+  
+  // API Config
+  apiUrl                String
+  apiKey                String?
+  
+  // Compliance
+  licensed              Boolean      @default(false)
+  licenseNumber         String?
+  licenseUrl            String?
+  
+  isActive              Boolean      @default(true)
+  
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  
+  games                 Game[]
+  
+  @@map("game_providers")
+}
+
+// === CONFIGURAÇÕES DO SISTEMA ===
+model SystemConfig {
+  id                    String       @id @default(cuid())
+  key                   String       @unique
+  value                 String
+  category              String       // COMPLIANCE, PAYMENT, GAME, etc.
+  description           String?
+  
+  updatedAt             DateTime     @updatedAt
+  updatedBy             String?
+  
+  @@index([category])
+  @@map("system_config")
+}

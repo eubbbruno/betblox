@@ -1,0 +1,569 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🚀 BETBLOX PROFESSIONAL DESIGN SYSTEM */
+/* Inspirado em: Stake.com, BC.Game, Bet365 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* === PROFESSIONAL COLOR PALETTE === */
+  --color-background: #0F0E13;
+  --color-surface: #1A1820;
+  --color-surface-raised: #211F2A;
+  --color-surface-hover: #2A2832;
+  
+  /* Brand Colors */
+  --color-primary: #6366F1;
+  --color-primary-hover: #5558E3;
+  --color-primary-light: rgba(99, 102, 241, 0.1);
+  --color-primary-glow: 0 0 40px rgba(99, 102, 241, 0.5);
+  
+  /* Semantic Colors */
+  --color-success: #10B981;
+  --color-success-light: rgba(16, 185, 129, 0.1);
+  --color-danger: #EF4444;
+  --color-danger-light: rgba(239, 68, 68, 0.1);
+  --color-warning: #F59E0B;
+  --color-warning-light: rgba(245, 158, 11, 0.1);
+  --color-info: #3B82F6;
+  --color-info-light: rgba(59, 130, 246, 0.1);
+  
+  /* VIP Levels */
+  --color-vip-bronze: #CD7F32;
+  --color-vip-silver: #C0C0C0;
+  --color-vip-gold: #FFD700;
+  --color-vip-platinum: #E5E4E2;
+  --color-vip-diamond: #B9F2FF;
+  
+  /* Text Colors */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #A1A1AA;
+  --color-text-tertiary: #71717A;
+  --color-text-muted: #52525B;
+  
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.2);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(20px);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    overflow-x: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Professional Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-hover);
+  }
+}
+
+@layer components {
+  /* === PROFESSIONAL COMPONENTS === */
+  
+  /* Glass Card (Stake.com style) */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+
+  /* Premium Game Card */
+  .game-card {
+    @apply glass-card relative overflow-hidden cursor-pointer;
+    aspect-ratio: 3/4;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+    z-index: 1;
+  }
+
+  .game-card:hover::before {
+    left: 100%;
+  }
+
+  .game-card-image {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    transition: transform 0.3s ease;
+  }
+
+  .game-card:hover .game-card-image {
+    transform: scale(1.05);
+  }
+
+  /* Professional Buttons */
+  .btn {
+    @apply relative inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-xl cursor-pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 0;
+    outline: 0;
+    font-feature-settings: 'tnum';
+  }
+
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+  }
+
+  .btn-secondary {
+    background: var(--color-surface-raised);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--color-success), #059669);
+    color: white;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, var(--color-danger), #dc2626);
+    color: white;
+  }
+
+  .btn-warning {
+    background: linear-gradient(135deg, var(--color-warning), #d97706);
+    color: #000;
+  }
+
+  /* Professional Input */
+  .input {
+    @apply w-full px-4 py-3 text-sm rounded-xl border;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+
+  .input::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  /* Professional Navigation */
+  .nav-item {
+    @apply relative flex items-center px-4 py-3 text-sm font-medium rounded-xl cursor-pointer;
+    color: var(--color-text-secondary);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .nav-item:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text-primary);
+  }
+
+  .nav-item.active {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: var(--color-primary);
+    border-radius: 2px;
+  }
+
+  /* Professional Badge */
+  .badge {
+    @apply inline-flex items-center px-2 py-1 text-xs font-bold rounded-md;
+  }
+
+  .badge-hot {
+    background: linear-gradient(135deg, var(--color-danger), #dc2626);
+    color: white;
+    animation: pulse 2s infinite;
+  }
+
+  .badge-new {
+    background: linear-gradient(135deg, var(--color-success), #059669);
+    color: white;
+  }
+
+  .badge-vip {
+    background: linear-gradient(135deg, var(--color-vip-gold), #b45309);
+    color: #000;
+  }
+
+  /* Professional Modal */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+  }
+
+  .modal-content {
+    @apply max-w-md w-full overflow-y-auto;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    max-height: 90vh;
+    animation: modalSlideIn 0.3s ease-out;
+  }
+
+  /* Professional Wallet Display */
+  .wallet-card {
+    @apply p-6 relative overflow-hidden;
+    background: linear-gradient(135deg, var(--color-success-light), var(--color-primary-light));
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .wallet-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+    animation: walletGlow 3s ease-in-out infinite;
+  }
+
+  /* Professional Odds Display */
+  .odds-button {
+    @apply relative overflow-hidden inline-flex items-center justify-center px-6 py-3 text-sm font-semibold rounded-xl cursor-pointer;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    min-width: 80px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-feature-settings: 'tnum';
+  }
+
+  .odds-button:hover {
+    background: var(--color-primary-light);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .odds-button.selected {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  /* Professional Loading States */
+  .loading-spinner {
+    @apply w-6 h-6 rounded-full;
+    border: 2px solid transparent;
+    border-top-color: var(--color-primary);
+    border-right-color: var(--color-primary);
+    animation: spin 1s linear infinite;
+  }
+
+  .loading-skeleton {
+    @apply rounded-md;
+    background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-surface-hover) 50%, var(--color-surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton 1.5s infinite;
+  }
+
+  /* Professional Notification */
+  .notification {
+    @apply p-4 flex items-center space-x-3;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    animation: slideInRight 0.3s ease-out;
+  }
+
+  .notification-success {
+    border-left: 4px solid var(--color-success);
+  }
+
+  .notification-error {
+    border-left: 4px solid var(--color-danger);
+  }
+
+  .notification-warning {
+    border-left: 4px solid var(--color-warning);
+  }
+
+  /* Professional Ticker */
+  .ticker {
+    overflow: hidden;
+    white-space: nowrap;
+    background: linear-gradient(90deg, transparent, var(--color-success-light), transparent);
+  }
+
+  .ticker-content {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+  }
+}
+
+@layer utilities {
+  /* === PROFESSIONAL ANIMATIONS === */
+  
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  @keyframes walletGlow {
+    0%, 100% { opacity: 0.3; transform: rotate(0deg); }
+    50% { opacity: 0.6; transform: rotate(180deg); }
+  }
+
+  @keyframes skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 53%, 80%, 100% {
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      transform: translateY(0);
+    }
+    40%, 43% {
+      animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      transform: translateY(-30px);
+    }
+    70% {
+      animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      transform: translateY(-15px);
+    }
+    90% { transform: translateY(-4px); }
+  }
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 5px var(--color-primary); }
+    50% { box-shadow: 0 0 20px var(--color-primary), 0 0 30px var(--color-primary); }
+    100% { box-shadow: 0 0 5px var(--color-primary); }
+  }
+
+  /* === UTILITY CLASSES === */
+  
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-warning));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-vip-gold {
+    background: linear-gradient(135deg, var(--color-vip-gold), #b45309);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-gradient {
+    border: 2px solid transparent;
+    background: linear-gradient(var(--color-surface), var(--color-surface)) padding-box,
+                linear-gradient(135deg, var(--color-primary), var(--color-warning)) border-box;
+  }
+
+  .hover-lift {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .hover-glow {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .animate-bounce-slow {
+    animation: bounce 2s infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  /* === RESPONSIVE BREAKPOINTS === */
+  
+  @screen sm {
+    .container { max-width: 640px; }
+  }
+
+  @screen md {
+    .container { max-width: 768px; }
+  }
+
+  @screen lg {
+    .container { max-width: 1024px; }
+  }
+
+  @screen xl {
+    .container { max-width: 1280px; }
+  }
+
+  @screen 2xl {
+    .container { max-width: 1536px; }
+  }
+
+  /* === PROFESSIONAL SPACING === */
+  
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* === PRINT STYLES === */
+  
+  @media print {
+    * {
+      color-adjust: exact !important;
+      -webkit-print-color-adjust: exact !important;
+    }
+  }
+}
+
+/* === DARK MODE SUPPORT === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+/* === REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
