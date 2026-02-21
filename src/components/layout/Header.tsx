@@ -8,15 +8,7 @@ export default function Header() {
   return (
     <>
       {/* Aviso Superior */}
-      <div style={{
-        background: 'linear-gradient(90deg, #ef4444, #dc2626, #ef4444)',
-        color: 'white',
-        padding: '8px 0',
-        textAlign: 'center',
-        fontSize: '14px',
-        fontWeight: 'bold',
-        animation: 'slide-ticker 20s linear infinite'
-      }}>
+      <div className="bg-gradient-to-r from-red-500 via-red-600 to-red-500 text-white py-2 text-center text-sm font-bold animate-[slide-ticker_20s_linear_infinite]">
         🚨 ATENÇÃO: Jogue com responsabilidade • +18 anos • Pode causar dependência • 
         🎉 BÔNUS DE BOAS-VINDAS: 100% até R$ 1.000 + 50 GIROS GRÁTIS • 
         💰 SAQUE VIA PIX EM 5 MINUTOS • 
@@ -24,85 +16,28 @@ export default function Header() {
       </div>
 
       {/* Header Principal */}
-      <header style={{
-        background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(26, 26, 27, 0.95))',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '3px solid transparent',
-        borderImage: 'linear-gradient(90deg, #fbbf24, #f59e0b, #8b5cf6, #7c3aed) 1',
-        padding: '16px 0',
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)'
-      }}>
-        <div style={{
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: '0 24px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
+      <header className="bg-gradient-to-br from-black/95 to-zinc-900/95 backdrop-blur-xl border-b-[3px] border-gradient sticky top-0 z-[100] shadow-[0_10px_30px_rgba(0,0,0,0.5)]" style={{ borderImage: 'linear-gradient(90deg, #fbbf24, #f59e0b, #8b5cf6, #7c3aed) 1' }}>
+        <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo + Menu Mobile */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div className="flex items-center gap-4">
             {/* Menu Hamburger (Mobile) */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              style={{
-                display: 'none',
-                background: 'transparent',
-                border: 'none',
-                color: '#fbbf24',
-                fontSize: '24px',
-                cursor: 'pointer',
-                '@media (max-width: 768px)': {
-                  display: 'block'
-                }
-              }}
+              className="hidden md:hidden max-md:block bg-transparent border-none text-amber-400 text-2xl cursor-pointer"
             >
               ☰
             </button>
 
             {/* Logo */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              cursor: 'pointer'
-            }}>
-              <div style={{
-                width: '48px',
-                height: '48px',
-                background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '24px',
-                fontWeight: '900',
-                color: '#000',
-                boxShadow: '0 0 20px rgba(251, 191, 36, 0.5)'
-              }}>
+            <div className="flex items-center gap-3 cursor-pointer">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-500 rounded-xl flex items-center justify-center text-2xl font-black text-black shadow-[0_0_20px_rgba(251,191,36,0.5)]">
                 B
               </div>
               <div>
-                <div style={{
-                  fontSize: '28px',
-                  fontWeight: '900',
-                  background: 'linear-gradient(45deg, #fbbf24, #f59e0b)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  lineHeight: 1
-                }}>
+                <div className="text-[28px] font-black bg-gradient-to-br from-amber-400 to-amber-500 bg-clip-text text-transparent leading-none">
                   BETBLOX
                 </div>
-                <div style={{
-                  fontSize: '10px',
-                  color: '#10b981',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px'
-                }}>
+                <div className="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">
                   Casa de Apostas Premium
                 </div>
               </div>
@@ -110,14 +45,7 @@ export default function Header() {
           </div>
 
           {/* Navegação Central */}
-          <nav style={{
-            display: 'flex',
-            gap: '8px',
-            background: 'rgba(139, 92, 246, 0.1)',
-            borderRadius: '16px',
-            padding: '8px',
-            border: '1px solid rgba(139, 92, 246, 0.2)'
-          }}>
+          <nav className="hidden md:flex gap-2 bg-purple-500/10 rounded-2xl p-2 border border-purple-500/20">
             {[
               { name: 'ESPORTES', icon: '⚽', href: '/plataforma' },
               { name: 'CASSINO', icon: '🎰', href: '/cassino' },
@@ -127,161 +55,44 @@ export default function Header() {
               <a
                 key={item.name}
                 href={item.href}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '12px 20px',
-                  borderRadius: '12px',
-                  background: 'transparent',
-                  color: '#a78bfa',
-                  textDecoration: 'none',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2))'
-                  e.currentTarget.style.color = '#fff'
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = '#a78bfa'
-                  e.currentTarget.style.transform = 'translateY(0)'
-                }}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-transparent text-purple-300 no-underline text-sm font-bold transition-all duration-300 cursor-pointer hover:bg-gradient-to-br hover:from-purple-500/20 hover:to-purple-600/20 hover:text-white hover:-translate-y-0.5"
               >
-                <span style={{ fontSize: '16px' }}>{item.icon}</span>
+                <span className="text-base">{item.icon}</span>
                 {item.name}
               </a>
             ))}
           </nav>
 
           {/* Área Direita - Saldo + Botões */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px'
-          }}>
+          <div className="flex items-center gap-4">
             {/* Saldo */}
-            <div style={{
-              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2))',
-              border: '2px solid rgba(16, 185, 129, 0.4)',
-              borderRadius: '16px',
-              padding: '12px 20px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3))'
-              e.currentTarget.style.transform = 'scale(1.05)'
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2))'
-              e.currentTarget.style.transform = 'scale(1)'
-            }}
-            >
-              <span style={{ fontSize: '20px' }}>💰</span>
+            <div className="hidden md:flex bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 border-2 border-emerald-500/40 rounded-2xl px-5 py-3 items-center gap-2 cursor-pointer transition-all duration-300 hover:bg-gradient-to-br hover:from-emerald-500/30 hover:to-emerald-600/30 hover:scale-105">
+              <span className="text-xl">💰</span>
               <div>
-                <div style={{ 
-                  fontSize: '12px', 
-                  color: '#6ee7b7',
-                  fontWeight: 'bold'
-                }}>
+                <div className="text-xs text-emerald-300 font-bold">
                   SALDO
                 </div>
-                <div style={{ 
-                  fontSize: '16px', 
-                  color: '#10b981',
-                  fontWeight: '900'
-                }}>
+                <div className="text-base text-emerald-500 font-black">
                   R$ 50.000,00
                 </div>
               </div>
             </div>
 
             {/* Botões de Ação */}
-            <div style={{
-              display: 'flex',
-              gap: '12px'
-            }}>
+            <div className="hidden md:flex gap-3">
               {/* Botão Entrar */}
-              <button style={{
-                background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2))',
-                border: '2px solid rgba(139, 92, 246, 0.4)',
-                borderRadius: '12px',
-                padding: '12px 20px',
-                color: '#c4b5fd',
-                fontWeight: 'bold',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(124, 58, 237, 0.4))'
-                e.currentTarget.style.color = '#fff'
-                e.currentTarget.style.transform = 'translateY(-2px)'
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2))'
-                e.currentTarget.style.color = '#c4b5fd'
-                e.currentTarget.style.transform = 'translateY(0)'
-              }}
-              >
+              <button className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-2 border-purple-500/40 rounded-xl px-5 py-3 text-purple-300 font-bold text-sm cursor-pointer transition-all duration-300 hover:bg-gradient-to-br hover:from-purple-500/40 hover:to-purple-600/40 hover:text-white hover:-translate-y-0.5">
                 🔑 ENTRAR
               </button>
 
               {/* Botão Registrar */}
-              <button style={{
-                background: 'linear-gradient(135deg, #fbbf24, #f59e0b)',
-                border: 'none',
-                borderRadius: '12px',
-                padding: '12px 24px',
-                color: '#000',
-                fontWeight: '900',
-                fontSize: '14px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 0 20px rgba(251, 191, 36, 0.3)'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px) scale(1.05)'
-                e.currentTarget.style.boxShadow = '0 10px 30px rgba(251, 191, 36, 0.5)'
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                e.currentTarget.style.boxShadow = '0 0 20px rgba(251, 191, 36, 0.3)'
-              }}
-              >
+              <button className="bg-gradient-to-br from-amber-400 to-amber-500 border-none rounded-xl px-6 py-3 text-black font-black text-sm cursor-pointer transition-all duration-300 shadow-[0_0_20px_rgba(251,191,36,0.3)] hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_10px_30px_rgba(251,191,36,0.5)]">
                 🚀 REGISTRAR
               </button>
             </div>
 
             {/* Botão Perfil/Avatar */}
-            <button style={{
-              width: '48px',
-              height: '48px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
-              border: '2px solid rgba(139, 92, 246, 0.4)',
-              color: 'white',
-              fontSize: '20px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'scale(1.1)'
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(139, 92, 246, 0.5)'
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'scale(1)'
-              e.currentTarget.style.boxShadow = 'none'
-            }}
-            >
+            <button className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 border-2 border-purple-500/40 text-white text-xl cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]">
               👤
             </button>
           </div>
@@ -290,22 +101,8 @@ export default function Header() {
 
       {/* Menu Mobile Overlay */}
       {isMenuOpen && (
-        <div style={{
-          position: 'fixed',
-          top: '120px',
-          left: 0,
-          right: 0,
-          background: 'rgba(0, 0, 0, 0.95)',
-          backdropFilter: 'blur(20px)',
-          padding: '20px',
-          zIndex: 99,
-          borderBottom: '2px solid rgba(139, 92, 246, 0.3)'
-        }}>
-          <nav style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
+        <div className="fixed top-[120px] left-0 right-0 bg-black/95 backdrop-blur-xl p-5 z-[99] border-b-2 border-purple-500/30">
+          <nav className="flex flex-col gap-4">
             {[
               { name: 'ESPORTES', icon: '⚽', href: '/plataforma' },
               { name: 'CASSINO', icon: '🎰', href: '/cassino' },
@@ -315,21 +112,9 @@ export default function Header() {
               <a
                 key={item.name}
                 href={item.href}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  padding: '16px 20px',
-                  borderRadius: '12px',
-                  background: 'rgba(139, 92, 246, 0.1)',
-                  color: '#fff',
-                  textDecoration: 'none',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  border: '1px solid rgba(139, 92, 246, 0.2)'
-                }}
+                className="flex items-center gap-3 px-5 py-4 rounded-xl bg-purple-500/10 text-white no-underline text-base font-bold border border-purple-500/20"
               >
-                <span style={{ fontSize: '20px' }}>{item.icon}</span>
+                <span className="text-xl">{item.icon}</span>
                 {item.name}
               </a>
             ))}
